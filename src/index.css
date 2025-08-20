@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%; /* caixa-cinza claro */
+    --foreground: 210 10% 23%; /* caixa-texto */
+    
+    --card: 0 0% 100%; /* caixa-branco */
+    --card-foreground: 210 10% 23%; /* caixa-texto */
+    
+    --popover: 0 0% 100%; /* caixa-branco */
+    --popover-foreground: 210 10% 23%; /* caixa-texto */
+    
+    --primary: 207 100% 34%; /* caixa-azul */
+    --primary-foreground: 0 0% 100%; /* caixa-branco */
+    
+    --secondary: 36 100% 47%; /* caixa-laranja */
+    --secondary-foreground: 0 0% 100%; /* caixa-branco */
+    
+    --muted: 210 17% 93%; /* caixa-cinza */
+    --muted-foreground: 210 10% 40%; /* caixa-cinzaEscuro */
+    
+    --accent: 210 17% 93%; /* caixa-cinza */
+    --accent-foreground: 207 100% 34%; /* caixa-azul */
+    
+    --destructive: 0 84% 60%; /* manter um vermelho para erros */
+    --destructive-foreground: 0 0% 100%; /* caixa-branco */
+    
+    --border: 210 14% 80%; /* caixa-cinzaMedio */
+    --input: 210 14% 80%; /* caixa-cinzaMedio */
+    --ring: 207 100% 34%; /* caixa-azul */
+    
+    --radius: 0.5rem;
+
+    /* Cores específicas da Caixa */
+    --caixa-azul: 207 100% 34%; /* #005CA9 */
+    --caixa-azul-escuro: 207 100% 22%; /* #003B71 */
+    --caixa-azul-claro: 196 100% 47%; /* #00AEEF */
+    --caixa-laranja: 36 100% 47%; /* #F39200 */
+    --caixa-laranja-escuro: 36 100% 38%; /* #C47400 */
+    --caixa-cinza: 0 0% 94%; /* #F0F0F0 */
+    --caixa-cinza-medio: 0 0% 80%; /* #CCCCCC */
+    --caixa-cinza-escuro: 0 0% 53%; /* #888888 */
+    --caixa-branco: 0 0% 100%; /* #FFFFFF */
+    --caixa-texto: 0 0% 20%; /* #333333 */
+  }
+
+  .dark {
+    --background: 207 100% 10%; /* Um azul bem escuro para o modo dark */
+    --foreground: 0 0% 94%; /* caixa-cinza */
+    
+    --card: 207 100% 15%; /* Um azul um pouco mais claro que o fundo */
+    --card-foreground: 0 0% 94%; /* caixa-cinza */
+    
+    --popover: 207 100% 10%;
+    --popover-foreground: 0 0% 94%;
+    
+    --primary: 196 100% 47%; /* caixa-azul-claro para destaque no dark */
+    --primary-foreground: 207 100% 10%;
+    
+    --secondary: 36 100% 55%; /* Laranja um pouco mais claro */
+    --secondary-foreground: 207 100% 10%;
+    
+    --muted: 207 100% 20%;
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: 207 100% 20%;
+    --accent-foreground: 0 0% 94%;
+    
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 94%;
+    
+    --border: 207 100% 25%;
+    --input: 207 100% 25%;
+    --ring: 196 100% 47%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased min-h-screen;
+  }
+}
+
+.lottery-ball {
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-caixa-branco font-bold text-sm shadow-lg transform transition-all duration-200 hover:scale-110;
+  background: linear-gradient(135deg, hsl(var(--caixa-laranja)) 0%, hsl(var(--caixa-laranja-escuro)) 100%);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.glass-card {
+  @apply bg-card/80 backdrop-blur-md border border-border shadow-lg rounded-lg;
+}
+
+/* Ajustes para botões e inputs para usar as cores da Caixa */
+.btn-caixa-primary {
+  @apply bg-caixa-azul text-caixa-branco hover:bg-caixa-azulEscuro;
+}
+
+.btn-caixa-secondary {
+  @apply bg-caixa-laranja text-caixa-branco hover:bg-caixa-laranjaEscuro;
+}
+
+.btn-caixa-outline {
+  @apply border-caixa-azul text-caixa-azul hover:bg-caixa-azul/10;
+}
+
+.input-caixa {
+  @apply border-caixa-cinzaMedio focus:border-caixa-azul focus:ring-caixa-azul;
+}
+
+/* 
+  As classes .text-caixa-azul, .text-caixa-laranja, etc., 
+  são geradas automaticamente pelo TailwindCSS 
+  a partir da configuração em tailwind.config.js.
+  Não é necessário defini-las aqui novamente.
+*/

@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL (Local)
+  postgres:
+    image: postgres:15-alpine
+    container_name: prognosticoscef-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: loteria_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - prognosticoscef-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d loteria_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Aplicação principal
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prognosticoscef-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DB_USER=postgres
+      - DB_HOST=181.215.134.218
+      - DB_NAME=loteria_db
+      - DB_PASSWORD=@Systemcode236
+      - DB_PORT=5432
+      - JWT_SECRET=seu_jwt_secret_super_seguro_aqui_123456789
+      - PORT=3001
+    ports:
+      - "3001:3001"
+    # Removido depends_on pois não temos mais banco local
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    networks:
+      - prognosticoscef-network
+    volumes:
+      - ./server.env:/app/server.env:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx como proxy reverso (opcional)
+  nginx:
+    image: nginx:alpine
+    container_name: prognosticoscef-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    networks:
+      - prognosticoscef-network
+
+# Removido volume local pois não temos mais banco local
+# volumes:
+#   postgres_data:
+#     driver: local
+
+networks:
+  prognosticoscef-network:
+    driver: bridge
